@@ -97,4 +97,3 @@ plt.ylabel("患者数")
 
 plt.tight_layout()
 plt.show()
-plt.show()
