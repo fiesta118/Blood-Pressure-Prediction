@@ -5,8 +5,8 @@ import os
 import pickle
 
 data_path = "./data/ecg_ppg_signals"
-table_path = "./data/测量记录表.csv"
-table = pd.read_csv(table_path, encoding="gbk")
+table_path = "./data/测量记录表复核.csv"
+table = pd.read_csv(table_path, encoding="utf-8")
 table.dropna(axis=0, how="any", inplace=True)
 table = table.sort_values(by="人员编号")
 table["人员编号"] = table["人员编号"].astype("Int64").astype(str)
@@ -24,14 +24,14 @@ df = pd.DataFrame(
         "ppg_g1",
         "ecg_g2",
         "ppg_g2",
-        "hbp_b1",
-        "hbp_b2",
-        "hbp_g1",
-        "hbp_g2",
-        "lbp_b1",
-        "lbp_b2",
-        "lbp_g1",
-        "lbp_g2",
+        "sbp_b1",
+        "sbp_b2",
+        "sbp_g1",
+        "sbp_g2",
+        "dbp_b1",
+        "dbp_b2",
+        "dbp_g1",
+        "dbp_g2",
     ]
 )
 
@@ -117,33 +117,33 @@ for index, row in table.iterrows():
     ):
         continue
 
-    hbp_b1 = row["血压仪高压B1"]
-    lbp_b1 = row["血压仪低压B1"]
-    hbp_b2 = row["血压仪高压B2"]
-    lbp_b2 = row["血压仪低压B2"]
-    hbp_g1 = row["血压仪高压G1"]
-    lbp_g1 = row["血压仪低压G1"]
-    hbp_g2 = row["血压仪高压G2"]
-    lbp_g2 = row["血压仪低压G2"]
+    sbp_b1 = row["DC_血压仪高压B1"]
+    dbp_b1 = row["DC_血压仪低压B1"]
+    sbp_b2 = row["DC_血压仪高压B2"]
+    dbp_b2 = row["DC_血压仪低压B2"]
+    sbp_g1 = row["DC_血压仪高压G1"]
+    dbp_g1 = row["DC_血压仪低压G1"]
+    sbp_g2 = row["DC_血压仪高压G2"]
+    dbp_g2 = row["DC_血压仪低压G2"]
     sex = row["性别"]
     age = row["年龄"]
 
     bp_pairs = [
-        ("血压仪高压B1", "血压仪低压B1"),
-        ("血压仪高压B2", "血压仪低压B2"),
-        ("血压仪高压G1", "血压仪低压G1"),
-        ("血压仪高压G2", "血压仪低压G2"),
+        ("DC_血压仪高压B1", "DC_血压仪低压B1"),
+        ("DC_血压仪高压B2", "DC_血压仪低压B2"),
+        ("DC_血压仪高压G1", "DC_血压仪低压G1"),
+        ("DC_血压仪高压G2", "DC_血压仪低压G2"),
     ]
 
     for high_col, low_col in bp_pairs:
-        if pd.notnull(hbp_b1) and pd.notnull(lbp_b1) and lbp_b1 > hbp_b1:
-            hbp_b1, lbp_b1 = lbp_b1, hbp_b1
-        if pd.notnull(hbp_b2) and pd.notnull(lbp_b2) and lbp_b2 > hbp_b2:
-            hbp_b2, lbp_b2 = lbp_b2, hbp_b2
-        if pd.notnull(hbp_g1) and pd.notnull(lbp_g1) and lbp_g1 > hbp_g1:
-            hbp_g1, lbp_g1 = lbp_g1, hbp_g1
-        if pd.notnull(hbp_g2) and pd.notnull(lbp_g2) and lbp_g2 > hbp_g2:
-            hbp_g2, lbp_g2 = lbp_g2, hbp_g2
+        if pd.notnull(sbp_b1) and pd.notnull(dbp_b1) and dbp_b1 > sbp_b1:
+            sbp_b1, dbp_b1 = dbp_b1, sbp_b1
+        if pd.notnull(sbp_b2) and pd.notnull(dbp_b2) and dbp_b2 > sbp_b2:
+            sbp_b2, dbp_b2 = dbp_b2, sbp_b2
+        if pd.notnull(sbp_g1) and pd.notnull(dbp_g1) and dbp_g1 > sbp_g1:
+            sbp_g1, dbp_g1 = dbp_g1, sbp_g1
+        if pd.notnull(sbp_g2) and pd.notnull(dbp_g2) and dbp_g2 > sbp_g2:
+            sbp_g2, dbp_g2 = dbp_g2, sbp_g2
 
     lines_b1 = read_lines_auto_encoding(path_b1)
     ecg_b1 = np.array(
@@ -193,14 +193,14 @@ for index, row in table.iterrows():
                     "ppg_g1": [ppg_g1],
                     "ecg_g2": [ecg_g2],
                     "ppg_g2": [ppg_g2],
-                    "hbp_b1": [hbp_b1],
-                    "hbp_b2": [hbp_b2],
-                    "hbp_g1": [hbp_g1],
-                    "hbp_g2": [hbp_g2],
-                    "lbp_b1": [lbp_b1],
-                    "lbp_b2": [lbp_b2],
-                    "lbp_g1": [lbp_g1],
-                    "lbp_g2": [lbp_g2],
+                    "sbp_b1": [sbp_b1],
+                    "sbp_b2": [sbp_b2],
+                    "sbp_g1": [sbp_g1],
+                    "sbp_g2": [sbp_g2],
+                    "dbp_b1": [dbp_b1],
+                    "dbp_b2": [dbp_b2],
+                    "dbp_g1": [dbp_g1],
+                    "dbp_g2": [dbp_g2],
                 }
             ),
         ],
